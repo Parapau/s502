@@ -64,6 +64,8 @@ public class JocService {
 		
 		Jugades jugades = (Jugades) separat[1];
 		
+		jugades.setId(jugador.getID());
+		
 		jugadorRepo.save(jugador);
 		jugadesRepo.save(jugades);
 		
@@ -102,6 +104,10 @@ public class JocService {
 		jugadesRepo.deleteAll();
 	}
 	
+	
+	public int maxId() {
+		jugadorRepo.fin
+	}
 	
 }
 
