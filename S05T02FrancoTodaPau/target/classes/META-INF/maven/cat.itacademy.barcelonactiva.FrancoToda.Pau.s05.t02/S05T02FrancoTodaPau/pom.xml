@@ -50,6 +50,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>
+				cat.tiacademy.barcelonactiva.FrancoToda.Toda.s04.t02.n01
+			</groupId>
+			<artifactId>S04T02N01FrancoTodaPau</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
