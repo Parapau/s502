@@ -53,7 +53,21 @@ public class JocService {
 	}
 	
 	
-	
+	public Optional<UnificatDTO> findByName (String nom) {
+		Optional<UnificatDTO> retorn = Optional.empty();
+		Optional<Jugador> buscar = jugadorRepo.findByName(nom);
+		
+		Jugades jugades;
+		
+		if (!nom.equals("Anonim") && buscar.isPresent()) {//Anonim no hauria de poder ser enviat pero for si de case...
+			
+			jugades = jugadesRepo.findById(buscar.get().getID()).get();
+			
+			retorn = Optional.ofNullable(UnificatDTO.unificar(buscar.get(), jugades));
+		} 
+		
+		return retorn;
+	}
 	
 	
 	public UnificatDTO save (UnificatDTO unificat) {
@@ -94,19 +108,21 @@ public class JocService {
 	}
 	
 	
-	public void deleteJugadesById(long id) {
-		jugadesRepo.deleteById(id);
+	public boolean deleteJugadesById(long id) {
+		boolean retorn = false;
+		
+		if (jugadesRepo.findById(id).isPresent()) {
+			jugadesRepo.deleteById(id);
+			retorn = true;
+		}
+		
+		return retorn;
 	}
 	
 	
 	public void deleteAll() {
 		jugadorRepo.deleteAll();
 		jugadesRepo.deleteAll();
-	}
-	
-	
-	public int maxId() {
-		jugadorRepo.fin
 	}
 	
 }

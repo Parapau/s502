@@ -1,5 +1,8 @@
 package cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import jakarta.persistence.Id;
 
 public class Jugades {
@@ -7,28 +10,22 @@ public class Jugades {
 	@Id
 	private long id;
 	
-	
-	private int partidesGuanyades;
-	private int partidesPerdudes;
-	
+	private List<Daus> partides;
 	
 	
 	public Jugades () {
-		this.partidesGuanyades = 0;
-		this.partidesPerdudes = 0;
+	partides = new ArrayList<Daus>();
 	}
 	
 	
-	public Jugades (int partidesGuanyades, int partidesPerdudes) {
-		this.partidesGuanyades = partidesGuanyades;
-		this.partidesPerdudes = partidesPerdudes;
+	public Jugades (List<Daus> partides) {
+		this.partides = partides;
 	}
 	
 	
-	public Jugades (long id, int partidesGuanyades, int partidesPerdudes) {
+	public Jugades (long id, List<Daus> partides) {
 		this.id = id;
-		this.partidesGuanyades = partidesGuanyades;
-		this.partidesPerdudes = partidesPerdudes;
+		this.partides = partides;
 	}
 
 
@@ -37,13 +34,8 @@ public class Jugades {
 	}
 
 
-	public int getPartidesGuanyades() {
-		return partidesGuanyades;
-	}
-
-
-	public int getPartidesPerdudes() {
-		return partidesPerdudes;
+	public List<Daus> getPartides() {
+		return partides;
 	}
 
 
@@ -52,27 +44,45 @@ public class Jugades {
 	}
 
 
-	public void setPartidesGuanyades(int partidesGuanyades) {
-		this.partidesGuanyades = partidesGuanyades;
+	public void setPartides(List<Daus> partides) {
+		this.partides = partides;
 	}
 
-
-	public void setPartidesPerdudes(int partidesPerdudes) {
-		this.partidesPerdudes = partidesPerdudes;
-	}
-	
-	
 	
 	public int percentatge() {
-		return (100/(getPartidesGuanyades() + getPartidesPerdudes()) * getPartidesGuanyades());	
+		int partidesGuanyades = 0;
+		List<Daus> partides = getPartides();
+		
+		for (Daus dau : partides) {
+			partidesGuanyades = (dau.victoria())?partidesGuanyades++:partidesGuanyades;
+		}
+		
+		return (100/(partides.size()) * partidesGuanyades);	
 	}
 	
+	public int victories() {
+		int partidesGuanyades = 0;
+		
+		for (Daus dau : getPartides()) {
+			partidesGuanyades = (dau.victoria())?partidesGuanyades++:partidesGuanyades;
+		}
+		
+		return partidesGuanyades;
+	}
 	
-	
+	public List<String> resultats() {
+		ArrayList<String> retorn = new ArrayList<String>();
+
+		for (Daus dau : getPartides()) {
+			retorn.add(dau.toString());
+		}		
+		
+		return retorn;
+	}
 	
 	@Override
 	public String toString() {
-		return "Partides guanyades = "  + getPartidesGuanyades() + "  Partides perdudes: " + getPartidesPerdudes();
+		return "Partides guanyades = "  + victories() + "  Partides perdudes: " + (getPartides().size() - victories());
 	}
 	
 	

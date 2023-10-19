@@ -1,7 +1,10 @@
 package cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.dto;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
+import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Daus;
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Jugades;
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Jugador;
 
@@ -11,22 +14,26 @@ public class UnificatDTO {
 	
 	private String nom;
 	
-	private int partidesGuanyades, partidesPerdudes;
+	private List<Daus> partides;
 	
 	
-	public UnificatDTO (long ID, String nom, int partidesGuanyades, int partidesPerdudes) {
+	public UnificatDTO (long ID, String nom, List<Daus> partides) {
 		this.ID = ID;
 		this.nom = nom;
-		this.partidesGuanyades = partidesGuanyades;
-		this.partidesPerdudes = partidesPerdudes;
+		this.partides = partides;
 	}
 	
 	
 	public UnificatDTO (String nom) {
 		this.ID = -1;
 		this.nom = nom;
-		this.partidesGuanyades = 0;
-		this.partidesPerdudes = 0;
+		this.partides = new ArrayList<Daus>();
+	}
+	
+	public UnificatDTO () {
+		this.ID = -1;
+		this.nom = "Anonim";
+		this.partides = new ArrayList<Daus>();
 	}
 
 
@@ -40,13 +47,8 @@ public class UnificatDTO {
 	}
 
 
-	public int getPartidesGuanyades() {
-		return partidesGuanyades;
-	}
-
-
-	public int getPartidesPerdudes() {
-		return partidesPerdudes;
+	public List<Daus> getPartides() {
+		return partides;
 	}
 
 
@@ -60,27 +62,54 @@ public class UnificatDTO {
 	}
 
 
-	public void setPartidesGuanyades(int partidesGuanyades) {
-		this.partidesGuanyades = partidesGuanyades;
-	}
-
-
-	public void setPartidesPerdudes(int partidesPerdudes) {
-		this.partidesPerdudes = partidesPerdudes;
+	public void setPartidesGuanyades(List<Daus> partides) {
+		this.partides= partides;
+	}	
+	
+	
+	public int percentatge() {
+		int partidesGuanyades = 0;
+		List<Daus> partides = getPartides();
+		
+		for (Daus dau : partides) {
+			partidesGuanyades = (dau.victoria())?partidesGuanyades++:partidesGuanyades;
+		}
+		
+		return (100/(partides.size()) * partidesGuanyades);	
 	}
 	
 	
+	public int victories() {
+		int partidesGuanyades = 0;
+		
+		for (Daus dau : getPartides()) {
+			partidesGuanyades = (dau.victoria())?partidesGuanyades++:partidesGuanyades;
+		}
+		
+		return partidesGuanyades;
+	}
+	
+	
+	public List<String> resultats() {
+		ArrayList<String> retorn = new ArrayList<String>();
+
+		for (Daus dau : getPartides()) {
+			retorn.add(dau.toString());
+		}		
+		
+		return retorn;
+	}
 	
 	
 	public static UnificatDTO unificar (Jugador jugador, Optional<Jugades> jugades) {
 		UnificatDTO retorn;
-
+		Jugades backup;
+		
 		if (jugades.isPresent()) {
-			retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), jugades.get().getPartidesGuanyades(), jugades.get().getPartidesPerdudes());
+			retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), jugades.get().getPartides());
 		} else {
-			/*TODO*/System.err.println("Un jugador no tenia jugades, pau mira que ha passat");//aixo segurament sobra pero dem moment ho deixo per si les mosques
-			Jugades backup = new Jugades();
-			retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), backup.getPartidesGuanyades(), backup.getPartidesPerdudes());
+			backup = new Jugades();
+			retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), backup.getPartides());
 
 		}
 
@@ -90,7 +119,7 @@ public class UnificatDTO {
 	public static UnificatDTO unificar (Jugador jugador, Jugades jugades) {
 		UnificatDTO retorn;
 
-		retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), jugades.getPartidesGuanyades(), jugades.getPartidesPerdudes());
+		retorn = new UnificatDTO (jugador.getID(), jugador.getNomJugador(), jugades.getPartides());
 
 		return retorn;
 	}
@@ -104,10 +133,10 @@ public class UnificatDTO {
 		
 		if (getID()== -1) {
 			jugador = new Jugador (getNom());
-			jugades = new Jugades (jugador.getID(), getPartidesGuanyades(), getPartidesPerdudes());
+			jugades = new Jugades (jugador.getID(), getPartides());
 		} else {
 			jugador = new Jugador (getID(), getNom());
-			jugades = new Jugades (getID(), getPartidesGuanyades(), getPartidesPerdudes());
+			jugades = new Jugades (getID(), getPartides());
 			
 		}
 		
@@ -116,9 +145,21 @@ public class UnificatDTO {
 		return retorn;
 	}
 	
+	
+	public String nomesPercent() {
+		return "Id: " + getID() + " Nom: " + getNom() + " Percentatge Victories: " + victories();
+	}
+	
+	
 	@Override
 	public String toString() {
-		return "ID: " +  getID() + ", Nom = " + getNom() + "Partides guanyades = "  + getPartidesGuanyades() + "  Partides perdudes: " + getPartidesPerdudes();
+		String retorn = "ID: " +  getID() + " Nom = " + getNom() + "Partides guanyades = "  + victories() + "  Partides perdudes: " + (getPartides().size() - victories()) + " Percentatge de victories: " + victories() + "%";									
+		
+		for (String resultat : resultats()) {
+			retorn += "/n	" + resultat;	
+		}
+		
+		return retorn;
 	}
 
 
