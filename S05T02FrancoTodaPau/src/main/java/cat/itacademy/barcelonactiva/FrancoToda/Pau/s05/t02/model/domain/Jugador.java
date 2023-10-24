@@ -4,14 +4,18 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+@Entity
+@Table
 public class Jugador implements Comparable<Jugador> {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)		
 	private long ID;
 
-	@Column(columnDefinition = "varchar(255) default = 'Anonim'")
+	@Column(columnDefinition = "varchar(255) default 'Anonim'")
 	private String nomJugador;
 
 

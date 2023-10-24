@@ -7,11 +7,12 @@ public class Daus {
 	
 	
 	
-	public Daus(int dau1, int dau2) {//tampoc se quan podries fer servir aixo pero aqui ho tens pau del futur :)
+	public Daus(int dau1, int dau2) {//tampoc se quan podries fer servir aixo pero aqui ho tens pau del futur :) moltes gracies pau del passat 👍
 		this.dau1 = dau1;
 		this.dau2 = dau2;
 	}
 
+	
 	
 	public int getDau1() {
 		return dau1;
@@ -36,8 +37,8 @@ public class Daus {
 	}
 	
 	public static Daus juga () {
-		int dau1 = (int) Math.random()*6;
-		int dau2 = (int) Math.random()*6;
+		int dau1 = (int) Math.floor(Math.random()*6);
+		int dau2 = (int) Math.floor(Math.random()*6);
 		return new Daus(dau1, dau2);
 	}
 	

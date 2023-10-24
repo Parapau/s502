@@ -8,7 +8,7 @@ import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Daus;
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Jugades;
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.model.domain.Jugador;
 
-public class UnificatDTO {
+public class UnificatDTO implements Comparable<UnificatDTO>{
 
 	private long ID;
 	
@@ -65,6 +65,15 @@ public class UnificatDTO {
 	public void setPartidesGuanyades(List<Daus> partides) {
 		this.partides= partides;
 	}	
+	
+	
+	public Daus jugar() {
+		Daus daus = Daus.juga();
+	
+		this.partides.add(daus);
+		
+		return daus;
+	}
 	
 	
 	public int percentatge() {
@@ -147,7 +156,7 @@ public class UnificatDTO {
 	
 	
 	public String nomesPercent() {
-		return "Id: " + getID() + " Nom: " + getNom() + " Percentatge Victories: " + victories();
+		return "Id: " + getID() + " Nom: " + getNom() + " Percentatge Victories: " + percentatge();
 	}
 	
 	
@@ -156,10 +165,16 @@ public class UnificatDTO {
 		String retorn = "ID: " +  getID() + " Nom = " + getNom() + "Partides guanyades = "  + victories() + "  Partides perdudes: " + (getPartides().size() - victories()) + " Percentatge de victories: " + victories() + "%";									
 		
 		for (String resultat : resultats()) {
-			retorn += "/n	" + resultat;	
+			retorn += "	\n	" + resultat;//no se perque no funciona el \n :(	
 		}
 		
 		return retorn;
+	}
+
+
+	@Override
+	public int compareTo(UnificatDTO dto) {
+		return this.percentatge() - dto.percentatge();
 	}
 
 

@@ -9,7 +9,6 @@ public class Jugades {
 
 	@Id
 	private long id;
-	
 	private List<Daus> partides;
 	
 	

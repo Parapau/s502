@@ -55,7 +55,7 @@ public class JocService {
 	
 	public Optional<UnificatDTO> findByName (String nom) {
 		Optional<UnificatDTO> retorn = Optional.empty();
-		Optional<Jugador> buscar = jugadorRepo.findByName(nom);
+		Optional<Jugador> buscar = jugadorRepo.findByNomJugador(nom);
 		
 		Jugades jugades;
 		
@@ -69,6 +69,11 @@ public class JocService {
 		return retorn;
 	}
 	
+	public boolean isName(String nom) {
+
+		return jugadorRepo.existsByNomJugador(nom);	
+	}
+	
 	
 	public UnificatDTO save (UnificatDTO unificat) {
 		
@@ -78,10 +83,13 @@ public class JocService {
 		
 		Jugades jugades = (Jugades) separat[1];
 		
+		jugador = jugadorRepo.save(jugador);
+		
 		jugades.setId(jugador.getID());
 		
-		jugadorRepo.save(jugador);
 		jugadesRepo.save(jugades);
+		
+		unificat.setID(jugador.getID());
 		
 		return unificat;
 	}
