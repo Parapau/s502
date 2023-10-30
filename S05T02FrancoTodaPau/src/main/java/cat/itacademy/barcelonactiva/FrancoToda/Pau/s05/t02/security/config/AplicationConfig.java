@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.security.repository.UserRepository;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -14,7 +16,9 @@ import org.springframework.context.annotation.Bean;
 public class AplicationConfig {
 
 	@Autowired
-	private UserRepository userRepository;//TODO TODO TODO El nom ha de ser un altre segurament TODO TODO TODO
+	UserRepository userRepository;
+	
+	
 	
 	
 	@Bean
@@ -23,8 +27,17 @@ public class AplicationConfig {
 
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				return userRepository.findUserByNom(username);
+				Optional<UserDetails> detalls = userRepository.findUserByNom(username);
 				
+				UserDetails retorn;
+				
+				if (detalls.isPresent()) {
+					retorn = detalls.get();
+				} else {
+					throw new UsernameNotFoundException("No hi ha cap usuari amb aquest nom");
+				}
+				 
+				return retorn;
 			}
 			
 		};

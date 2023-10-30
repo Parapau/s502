@@ -207,6 +207,17 @@ public class JocController {
 		
 		return retorn;
 	}
+	
+	
+	@GetMapping("/aTomarPorCulo")
+	public ResponseEntity<Object> deleteAll() {
+		service.deleteAll();
+		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+	}
+	
+	
+	
+	
 }
 
 
