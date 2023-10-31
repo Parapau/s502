@@ -1,11 +1,15 @@
 package cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.security.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.security.repository.UserRepository;
 
@@ -19,10 +23,7 @@ public class AplicationConfig {
 
 	@Autowired
 	UserRepository userRepository;
-	
-	
-	
-	
+
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new UserDetailsService() {
@@ -53,19 +54,21 @@ public class AplicationConfig {
 		autenticador.setUserDetailsService(userDetailsService());
 		autenticador.setPasswordEncoder(passwordEncoder());
 		
-		return daoAuthenticationProvider;
+		return autenticador;
 	}
 	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		
-		PasswordEncoder encoder
-		
-		
-		
-		
-		return null;
+		return new BCryptPasswordEncoder();
+	}
+	
+	
+	
+	@Bean
+	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
 	}
 	
 	

@@ -30,10 +30,18 @@ public class User implements UserDetails{
 	
 	public User() {}
 	
-	public User(long id, String nom, String contrasenya) {
+	public User(long id, String nom, String contrasenya, Role rol) {
 		this.id = id;
 		this.nom = nom;
 		this.contrasenya = contrasenya;
+		this.rol = rol; 
+	}
+	
+	
+	public User (String nom, String contrasenya, Role rol) {
+		this.nom = nom;
+		this.contrasenya = contrasenya;
+		this.rol = rol;
 	}
 
 	public long getId() {
@@ -79,26 +87,22 @@ public class User implements UserDetails{
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	
