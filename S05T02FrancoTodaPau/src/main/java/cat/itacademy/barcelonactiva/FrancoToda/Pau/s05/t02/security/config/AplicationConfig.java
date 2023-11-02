@@ -31,10 +31,12 @@ public class AplicationConfig {
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				Optional<UserDetails> detalls = userRepository.findUserByNom(username);
-				
+				System.err.println("ja no se on poasr aixo");
 				UserDetails retorn;
+				System.err.println(username);
 				
 				if (detalls.isPresent()) {
+					System.err.println(detalls.get().getUsername());
 					retorn = detalls.get();
 				} else {
 					throw new UsernameNotFoundException("No hi ha cap usuari amb aquest nom");
@@ -49,7 +51,7 @@ public class AplicationConfig {
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider () {
-		
+		System.err.println("hola, que tal");
 		DaoAuthenticationProvider autenticador = new DaoAuthenticationProvider();
 		autenticador.setUserDetailsService(userDetailsService());
 		autenticador.setPasswordEncoder(passwordEncoder());
@@ -60,7 +62,7 @@ public class AplicationConfig {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		
+		System.err.println("les patates estan molt bones");
 		return new BCryptPasswordEncoder();
 	}
 	
@@ -68,6 +70,7 @@ public class AplicationConfig {
 	
 	@Bean
 	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		System.err.println("sui");
 		return config.getAuthenticationManager();
 	}
 	

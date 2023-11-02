@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.lang.NonNull;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,18 +31,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	
 	
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 		
 		final String authHeader = request.getHeader("Authoritzation");
-		
+		System.err.println(":|");
 		final String jwt;
 		final String nom;
 		if (authHeader == null || !authHeader.startsWith("Bearer")) {
+			System.err.println(":)");
 			filterChain.doFilter(request, response);
+			System.err.println("Aixo no hauria de sortir");
 		} else {
 			jwt = authHeader.substring(7);
 			
 			nom = jwtService.extractNom(jwt);
+			
+			System.err.println(":(");
 			
 			if (nom != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(nom);
@@ -58,19 +63,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,14 +22,14 @@ public class SecurityController {
 	}
 	
 	
-	@GetMapping("/registrar")
-	public ResponseEntity<String> joder () {
-		return ResponseEntity.ok("Si aixo funciona m'enfado");
-	}
+//	@GetMapping("/registrar")
+//	public ResponseEntity<String> joder () {
+//		return ResponseEntity.ok("Si aixo funciona m'enfado");
+//	}
 	
 	
 	@PostMapping("/registrar")
-	public ResponseEntity<AuthenticationResponse> Register(@RequestBody RegisterRequest request) {
+	public ResponseEntity<AuthenticationResponse> Register(@RequestBody Request request) {
 		
 		System.out.println("BLA");
 		
@@ -40,8 +39,8 @@ public class SecurityController {
 	
 	
 	
-	@PutMapping("/autenticar")
-	public ResponseEntity<AuthenticationResponse> Authenticate (@RequestBody AuthenticationRequest request) {
+	@PostMapping("/autenticar")
+	public ResponseEntity<AuthenticationResponse> Authenticate (@RequestBody Request request) {
 		
 		return ResponseEntity.ok(service.authenticate(request));
 	}

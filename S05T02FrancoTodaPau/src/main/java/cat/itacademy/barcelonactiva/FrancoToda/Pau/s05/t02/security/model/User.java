@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +21,7 @@ import jakarta.persistence.Table;
 public class User implements UserDetails{
 
 	@Id
+	@GeneratedValue
 	private long id;
 	
 	private String nom;

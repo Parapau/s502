@@ -26,13 +26,13 @@ public class AuthenticationService {
 	@Autowired
 	AuthenticationManager authManager;
 	
-	public AuthenticationResponse authenticate (AuthenticationRequest request) {	
+	public AuthenticationResponse authenticate (Request request) {	
 		
-		UsernamePasswordAuthenticationToken nomToken = new UsernamePasswordAuthenticationToken(request.GetNom(), request.GetContrasenya());
+		UsernamePasswordAuthenticationToken nomToken = new UsernamePasswordAuthenticationToken(request.getNom(), request.getContrasenya());
 		
 		authManager.authenticate(nomToken);
 		
-		var user = userRepo.findUserByNom(request.GetNom()).orElseThrow();
+		var user = userRepo.findUserByNom(request.getNom()).orElseThrow();
 
 		var token = jwtService.generateToken(user);
 		
@@ -40,7 +40,7 @@ public class AuthenticationService {
 	}
 	
 	
-	public AuthenticationResponse register (RegisterRequest request) {
+	public AuthenticationResponse register (Request request) {
 		
 		User user = new User(request.getNom(), encoder.encode(request.getContrasenya()), Role.USUARI);
 		
