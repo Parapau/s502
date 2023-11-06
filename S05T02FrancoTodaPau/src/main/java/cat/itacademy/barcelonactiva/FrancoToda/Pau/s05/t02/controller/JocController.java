@@ -29,7 +29,7 @@ public class JocController {
 	
 	
 	@PostMapping("/")
-	public ResponseEntity<UnificatDTO> add (@RequestParam String nom){
+	public ResponseEntity<UnificatDTO> add (@RequestParam (value = "nom", required = false, defaultValue = "Anonim") String nom){
 		ResponseEntity<UnificatDTO> retorn;
 		UnificatDTO unificat;
 		
@@ -49,27 +49,28 @@ public class JocController {
 	@PutMapping("/")//no pot arribar cap request sense o nom o id IMPORTANT
 	public ResponseEntity<UnificatDTO> canviaNom (@RequestParam (value = "id", required = false, defaultValue = "-420")long id , @RequestParam (value = "nomVell", required = false)String nomVell, @RequestParam String nomNou ) {
 		ResponseEntity<UnificatDTO> retorn;
-		UnificatDTO unificat;
+		UnificatDTO unificat = null;
+		boolean esta = false;
 		if (!(id == -1) && service.findById(id).isPresent()) {
 			unificat = service.findById(id).get();
-			unificat.setNom(nomNou);
-			service.update(unificat);
-			retorn = new ResponseEntity<UnificatDTO>(unificat, HttpStatus.OK);
-		} else if (!nomVell.equals(null) && service.findByName(nomVell).isPresent()){
+			esta = true;
+		} else if (nomVell.equals("Anonim")) {
+		
+	    } else if (!nomVell.equals(null) && service.findByName(nomVell).isPresent()){
 			unificat = service.findByName(nomVell).get();
+			esta = true;
+		} 
+			
+		if (esta && service.findByName(nomNou).isEmpty()) {
 			unificat.setNom(nomNou);
 			service.update(unificat);
 			retorn = new ResponseEntity<UnificatDTO>(unificat, HttpStatus.OK);
-		} else if (nomVell.equals(null) && id == 1) {//Aixo no hauria de passar mai
-			for (int i = 0; i<24; i++) {
-				System.err.println("pau l'has cagat");
-				System.err.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			}
-			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.BAD_REQUEST);
-			
+		} else if (esta){
+			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.NOT_ACCEPTABLE);
 		} else {
 			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.NOT_FOUND);
 		}
+		
 		
 		return retorn;
 	}

@@ -20,12 +20,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
-
-	@Autowired
-	JwtService jwtService;
 	
 	@Autowired
-	UserDetailsService userDetailsService;
+	UserDetailsService userDetailsService;// = new CustomUserDetailsService();
+	
+	@Autowired
+	JwtService jwtService;// = new JwtService();//TODO TODO TODO No entenc perque l'he de crear jo			puto lombok de merda
 	
 	public JwtAuthenticationFilter () {}
 	
@@ -33,20 +33,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 		
-		final String authHeader = request.getHeader("Authoritzation");
-		System.err.println(":|");
+		jwtService.funciona();
+		
+		final String authHeader = request.getHeader("Authorization");
 		final String jwt;
 		final String nom;
-		if (authHeader == null || !authHeader.startsWith("Bearer")) {
-			System.err.println(":)");
+		System.out.println(authHeader);
+		if ((authHeader == null) || !authHeader.startsWith("Bearer")) {
 			filterChain.doFilter(request, response);
-			System.err.println("Aixo no hauria de sortir");
 		} else {
 			jwt = authHeader.substring(7);
 			
 			nom = jwtService.extractNom(jwt);
 			
-			System.err.println(":(");
 			
 			if (nom != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(nom);

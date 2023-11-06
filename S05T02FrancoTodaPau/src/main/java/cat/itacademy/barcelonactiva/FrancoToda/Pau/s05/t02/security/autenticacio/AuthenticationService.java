@@ -15,7 +15,7 @@ import cat.itacademy.barcelonactiva.FrancoToda.Pau.s05.t02.security.model.User;
 public class AuthenticationService {
 
 	@Autowired
-	UserRepository userRepo;
+	UserRepository userRepo;// = new UserService();
 
 	@Autowired
 	PasswordEncoder encoder;

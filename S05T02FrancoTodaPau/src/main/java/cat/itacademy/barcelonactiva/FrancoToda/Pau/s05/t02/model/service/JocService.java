@@ -71,7 +71,10 @@ public class JocService {
 	
 	public boolean isName(String nom) {
 
-		return jugadorRepo.existsByNomJugador(nom);	
+		boolean exists = (nom.equals("Anonim"))? false : jugadorRepo.existsByNomJugador(nom);
+		
+		
+		return exists;	
 	}
 	
 	

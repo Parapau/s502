@@ -19,6 +19,9 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 	
+	public JwtService() {};
+	
+	
 	private final String secret_key = "1bce8d1c10f17555d0e3f2196061bb8396c952bb6ca8146340497e2dd114485c";
 	
 	
@@ -52,7 +55,6 @@ public class JwtService {
 		return Jwts.builder().claims(extractClaims)
 				.subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
 				.signWith(getSecretKey(), SIG.HS256).compact();
 	}
 
@@ -80,6 +82,13 @@ public class JwtService {
 	}
 	
 	
-	
+	public void funciona() {
+		boolean funciona = true;
+		if (funciona) {
+			System.out.println("Estic funcionant :)");
+		} else {
+			System.err.println("No estic funcionant :(");
+		}
+	}
 	
 }

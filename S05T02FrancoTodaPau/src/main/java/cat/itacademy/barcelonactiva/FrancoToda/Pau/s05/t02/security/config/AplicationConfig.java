@@ -24,14 +24,17 @@ public class AplicationConfig {
 	@Autowired
 	UserRepository userRepository;
 
+//	@Autowired
+//	UserDetailsService userDetailsService;
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new UserDetailsService() {
 
+			
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				Optional<UserDetails> detalls = userRepository.findUserByNom(username);
-				System.err.println("ja no se on poasr aixo");
 				UserDetails retorn;
 				System.err.println(username);
 				
@@ -45,13 +48,15 @@ public class AplicationConfig {
 				return retorn;
 			}
 			
+			
+			
 		};
 	}
 	
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider () {
-		System.err.println("hola, que tal");
+		System.err.println("hola, que tal, soc el proveïdor");
 		DaoAuthenticationProvider autenticador = new DaoAuthenticationProvider();
 		autenticador.setUserDetailsService(userDetailsService());
 		autenticador.setPasswordEncoder(passwordEncoder());
@@ -62,7 +67,7 @@ public class AplicationConfig {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		System.err.println("les patates estan molt bones");
+		System.err.println("les patates estan molt bones, aixo es un missatge xifrat (el missatge de veritat es que les patates estan MOLT bones)");
 		return new BCryptPasswordEncoder();
 	}
 	
