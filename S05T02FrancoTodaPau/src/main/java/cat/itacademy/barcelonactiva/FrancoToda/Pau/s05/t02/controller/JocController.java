@@ -47,26 +47,26 @@ public class JocController {
 	
 	
 	@PutMapping("/")//no pot arribar cap request sense o nom o id IMPORTANT
-	public ResponseEntity<UnificatDTO> canviaNom (@RequestParam (value = "id", required = false, defaultValue = "-420")long id , @RequestParam (value = "nomVell", required = false)String nomVell, @RequestParam String nomNou ) {
+	public ResponseEntity<UnificatDTO> canviaNom (@RequestParam (value = "id", required = false, defaultValue = "-1")long id , @RequestParam (value = "nomVell", required = false)String nomVell, @RequestParam String nomNou ) {
 		ResponseEntity<UnificatDTO> retorn;
 		UnificatDTO unificat = null;
 		boolean esta = false;
 		if (!(id == -1) && service.findById(id).isPresent()) {
 			unificat = service.findById(id).get();
 			esta = true;
-		} else if (nomVell.equals("Anonim")) {
-		
-	    } else if (!nomVell.equals(null) && service.findByName(nomVell).isPresent()){
+		} else if (!nomVell.equals(null) && service.findByName(nomVell).isPresent() && !nomVell.equals("Anonim")){
 			unificat = service.findByName(nomVell).get();
 			esta = true;
 		} 
 			
-		if (esta && service.findByName(nomNou).isEmpty()) {
+		if (esta && !service.isName(nomNou)) {
 			unificat.setNom(nomNou);
 			service.update(unificat);
 			retorn = new ResponseEntity<UnificatDTO>(unificat, HttpStatus.OK);
 		} else if (esta){
 			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.NOT_ACCEPTABLE);
+		} else if (id == -1 && (nomVell.equals(null) || nomVell.equals("Anonim"))){
+			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.BAD_REQUEST);
 		} else {
 			retorn = new ResponseEntity<UnificatDTO>(HttpStatus.NOT_FOUND);
 		}

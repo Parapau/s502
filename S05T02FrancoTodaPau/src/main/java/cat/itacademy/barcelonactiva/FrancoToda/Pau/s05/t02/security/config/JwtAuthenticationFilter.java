@@ -22,10 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	
 	@Autowired
-	UserDetailsService userDetailsService;// = new CustomUserDetailsService();
+	UserDetailsService userDetailsService;
 	
 	@Autowired
-	JwtService jwtService;// = new JwtService();//TODO TODO TODO No entenc perque l'he de crear jo			puto lombok de merda
+	JwtService jwtService;
 	
 	public JwtAuthenticationFilter () {}
 	
@@ -46,14 +46,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			
 			nom = jwtService.extractNom(jwt);
 			
+			System.err.println("Hola que tal");
 			
 			if (nom != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+				System.err.println("molt be he passat el primer if");
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(nom);
 				if (jwtService.isTokenValid(jwt, userDetails)) {
+					System.err.println("Dale pues jo el segon");
 					UsernamePasswordAuthenticationToken autenticacio = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-					
+					System.err.println("e");
 					autenticacio.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-					
+					System.err.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 					SecurityContextHolder.getContext().setAuthentication(autenticacio);
 				}
 			}

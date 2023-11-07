@@ -28,7 +28,9 @@ public class JwtService {
 
 	public String extractNom(String token) {
 		System.err.println("estic treient el nom :)");
-		return extractAllClaims(token).getSubject();
+		String retorn = extractAllClaims(token).getSubject();
+		System.err.println("vull veure si ha explotat");
+		return retorn;
 	}
 
 	
@@ -55,6 +57,7 @@ public class JwtService {
 		return Jwts.builder().claims(extractClaims)
 				.subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
+				.expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 365)))
 				.signWith(getSecretKey(), SIG.HS256).compact();
 	}
 
@@ -73,7 +76,7 @@ public class JwtService {
 	
 	
 	public boolean isTokenExpired(String token) {
-		return extractClaims(token, Claims::getExpiration).before(new Date());
+		return extractClaims(token, Claims::getExpiration).before(new Date(System.currentTimeMillis()));
 	}
 
 	private SecretKey getSecretKey() {

@@ -34,6 +34,7 @@ public class AplicationConfig {
 			
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+				System.err.println("crec que el problema esta aqui");
 				Optional<UserDetails> detalls = userRepository.findUserByNom(username);
 				UserDetails retorn;
 				System.err.println(username);
